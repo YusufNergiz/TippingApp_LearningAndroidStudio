@@ -8,7 +8,7 @@ import kotlin.math.round
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,32 +17,28 @@ class MainActivity : AppCompatActivity() {
 
         binding.calculateTipButton.setOnClickListener{ calculateTip() }
     }
-    fun calculateTip() {
-
+    private fun calculateTip() {
         val stringInTextField = binding.costOfService.text.toString()
         val cost = stringInTextField.toDoubleOrNull()
-        if (cost == null){
+        if (cost == null) {
             return
         }
 
-        val selectedId = binding.tipOptions.checkedRadioButtonId
-        val tipPercentage = when (selectedId) {
+        val tipPercentage = when (binding.tipOptions.checkedRadioButtonId) {
             R.id.amazing_button -> 0.20
             R.id.good_button -> 0.18
             else -> 0.15
         }
+
         var tip = tipPercentage * cost
-
-        val roundUp = binding.roundUpSwitch.isChecked
-
-        if(roundUp){
+        if(binding.roundUpSwitch.isChecked){
             tip = kotlin.math.ceil(tip)
         }
-        NumberFormat.getCurrencyInstance()
 
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
-
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+
+
     }
 
 }
